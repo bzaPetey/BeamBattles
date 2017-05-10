@@ -3,19 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-            Move(Direction.UP);
-        else if (Input.GetKeyDown(KeyCode.D))
-            Move(Direction.RIGHT);
-        else if (Input.GetKeyDown(KeyCode.S))
-            Move(Direction.DOWN);
-        else if (Input.GetKeyDown(KeyCode.A))
-            Move(Direction.LEFT);
-    }
-
-
     public void Move(Direction dir)
     {
         Vector3 pos = transform.position;
