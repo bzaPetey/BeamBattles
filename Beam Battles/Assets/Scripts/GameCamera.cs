@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(Camera))]
 public class GameCamera : MonoBehaviour {
     [SerializeField] float distanceToPlayer = 20f;

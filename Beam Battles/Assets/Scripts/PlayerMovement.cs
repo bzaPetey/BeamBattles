@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class PlayerMovement : MonoBehaviour {
     public void Move(Direction dir)
     {

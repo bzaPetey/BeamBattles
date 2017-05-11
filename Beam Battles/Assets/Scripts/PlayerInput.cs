@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerAttack))]
 public class PlayerInput : MonoBehaviour {
     PlayerMovement playerMovement;
+    PlayerAttack playerAttack;
 
     [SerializeField] bool canMoveUp;
     [SerializeField] bool canMoveRight;
@@ -16,6 +19,7 @@ public class PlayerInput : MonoBehaviour {
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
 
 
@@ -36,8 +40,11 @@ public class PlayerInput : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.A) && canMoveLeft)
             playerMovement.Move(Direction.LEFT);
 
+        if (Input.GetKeyDown(KeyCode.Space))
+            playerAttack.Fire();
 
-        GetAvailableDirections();
+            //this is going to be called only once and from the turn manager
+            GetAvailableDirections();
     }
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class GameManager : MonoBehaviour {
     [SerializeField] Board board;
     [SerializeField] Player player;
