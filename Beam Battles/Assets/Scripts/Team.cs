@@ -1,23 +1,37 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Team {
-    List<Player> players;
-    int maxPlayers;
+    [SerializeField] int teamID;
+    [SerializeField] int maxPlayers;
+    [SerializeField] List<BeamPlayer> players;
     //add a name for the team
     //add a color for the team
-    
+
+
+    public int TeamID
+    {
+        get { return teamID; }
+        set { teamID = value; }
+    }
+
+    public bool IsFull
+    {
+        get { return players.Count == maxPlayers; }
+    }
+
 
     public Team()
     {
-        players = new List<Player>();
+        players = new List<BeamPlayer>();
         maxPlayers = 1;
     }
 
 
     public Team(int playerCount)
     {
-        players = new List<Player>();
+        players = new List<BeamPlayer>();
         maxPlayers = playerCount;
     }
 
@@ -32,14 +46,14 @@ public class Team {
     }
 
 
-    public void AddPlayer(Player player)
+    public void AddPlayer(BeamPlayer player)
     {
         if (players.Count < maxPlayers)
             players.Add(player);
     }
 
 
-    public void RemovePlayer(Player player)
+    public void RemovePlayer(BeamPlayer player)
     {
         players.Remove(player);
     }

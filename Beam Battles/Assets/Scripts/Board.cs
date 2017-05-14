@@ -32,7 +32,7 @@ public class Board : MonoBehaviour {
         int walllCount = (mapRows * mapRows) * 2 - mapRows * 2;
         int midNumber = ((walllCount) / 2 ) - 1;
 
-        Debug.Log(mapRows + ": " + walllCount + "-" + midNumber);
+//        Debug.Log(mapRows + ": " + walllCount + "-" + midNumber);
 
         for (int cnt = 0; cnt < walllCount; cnt++)
             walls.Add(cnt);
@@ -82,6 +82,7 @@ public class Board : MonoBehaviour {
         }
     }
 
+
     void PlaceOuterWalls()
     {
         Transform northWall = Instantiate(wallPrefab);
@@ -89,23 +90,28 @@ public class Board : MonoBehaviour {
         Transform southWall = Instantiate(wallPrefab);
         Transform westWall = Instantiate(wallPrefab);
 
-        northWall.localScale = new Vector3(mapRows * 3, northWall.transform.localScale.y, northWall.transform.localScale.x);
+        int offset = mapRows * 3;
+        northWall.localScale = new Vector3(offset, northWall.transform.localScale.y, northWall.transform.localScale.x);
         northWall.position = new Vector3(mapRows * 1.5f, eastWall.position.y, mapRows * 3);
+        northWall.GetComponent<Renderer>().material.mainTextureScale = new Vector2(offset, 4);
         northWall.name = "North Wall";
         northWall.parent = transform;
 
-        eastWall.localScale = new Vector3(eastWall.transform.localScale.x, eastWall.transform.localScale.y, mapRows * 3);
+        eastWall.localScale = new Vector3(eastWall.transform.localScale.x, eastWall.transform.localScale.y, offset);
         eastWall.position = new Vector3(mapRows * 3, eastWall.position.y, mapRows * 1.5f);
+        eastWall.GetComponent<Renderer>().material.mainTextureScale = new Vector2(offset, 4);
         eastWall.name = "East Wall";
         eastWall.parent = transform;
 
-        southWall.localScale = new Vector3(mapRows * 3, southWall.transform.localScale.y, southWall.transform.localScale.x);
+        southWall.localScale = new Vector3(offset, southWall.transform.localScale.y, southWall.transform.localScale.x);
         southWall.position = new Vector3(mapRows * 1.5f, southWall.position.y, 0);
+        southWall.GetComponent<Renderer>().material.mainTextureScale = new Vector2(offset, 4);
         southWall.name = "South Wall";
         southWall.parent = transform;
 
-        westWall.localScale = new Vector3(westWall.transform.localScale.x, westWall.transform.localScale.y, mapRows * 3);
+        westWall.localScale = new Vector3(westWall.transform.localScale.x, westWall.transform.localScale.y, offset);
         westWall.position = new Vector3( 0, westWall.position.y, mapRows * 1.5f);
+        westWall.GetComponent<Renderer>().material.mainTextureScale = new Vector2(offset, 4);
         westWall.name = "West Wall";
         westWall.parent = transform;
     }
