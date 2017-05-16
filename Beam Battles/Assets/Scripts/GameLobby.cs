@@ -1,6 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Microsoft;
 using UnityEngine;
+using Xbox.Services.Beam;
+using System.Collections.Generic;
 
 [DisallowMultipleComponent]
 public class GameLobby : MonoBehaviour {
@@ -8,16 +9,29 @@ public class GameLobby : MonoBehaviour {
     [SerializeField] int numberOfPlayerPerTeam = 1;
     [SerializeField] GameManager gm;
     [SerializeField] List<Team> team;
+    [SerializeField] GameObject gameLobbyPannel;
 
 
 
     private void Start()
     {
         NumberOfPlayersPerTeam = 4;
-        NumberOfTeams = 3;
+        NumberOfTeams = 2;
+    }
 
-        for(int cnt = 0; cnt < numberOfTeams; cnt++)
-            team.Add(new Team(NumberOfPlayersPerTeam));
+
+    private void OnEnable()
+    {
+
+        Beam.OnInteractivityStateChanged += OnInteractivityStateChanged;
+        Beam.OnBeamButtonEvent += OnButton;
+    }
+
+
+    void OnDisable()
+    {
+        Beam.OnInteractivityStateChanged -= OnInteractivityStateChanged;
+        Beam.OnBeamButtonEvent -= OnButton;
     }
 
 
@@ -47,21 +61,32 @@ public class GameLobby : MonoBehaviour {
     }
 
 
-    //create a gui that allows the streamer to change these values before the viewers are allowed to join the game.
-
-    //if a team is stil in the list, then that means that there is an empty spot in it for a player.
-    //add a player to a random team and then check to see if that team is full
-    //if that team is full, pass it back to the GameManager and remove it from this list
-    public void AssignPlayerToRandomTeam(BeamPlayer player)
+    public void StartGame()
     {
+        for (int cnt = 0; cnt < NumberOfTeams; cnt++)
+            team.Add(new Team(numberOfPlayerPerTeam));
+
+        Beam.GoInteractive();
+
+        gameLobbyPannel.SetActive(false);
+    }
+
+
+    //return a bool if the player was added to the team properly
+    public void AssignPlayerToRandomTeam(BeamParticipant player)
+    {
+        Debug.Log(player.BeamUserName);
+
         if (team.Count < 1)
             return;
 
         int rndTeam = Random.Range(0, team.Count);
 
-        Debug.Log(rndTeam);
+        //        Debug.Log(rndTeam);
 
-        team[rndTeam].AddPlayer(player);
+        BeamPlayer bp = new BeamPlayer(player);
+
+        team[rndTeam].AddPlayer(bp);
 
         if(team[rndTeam].IsFull)
         {
@@ -73,11 +98,32 @@ public class GameLobby : MonoBehaviour {
     }
 
 
-    private void Update()
+
+
+
+    private void OnButton(object sender, BeamButtonEventArgs e)
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Beam.GetButtonUp("joinGame"))
         {
-            AssignPlayerToRandomTeam(new BeamPlayer());
+            AssignPlayerToRandomTeam(e.Participant);
+
+
+            //this does not work yet.
+            //need a way to disable the join game button when they press it
+            e.Participant.Buttons[0].SetDisabled(true);
+
+//            Beam.Button("joinGame").SetDisabled(true);
         }
+
     }
+
+
+    private void OnInteractivityStateChanged(object sender, BeamInteractivityStateChangedEventArgs e)
+    {
+        if (Beam.InteractivityState == BeamInteractivityState.InteractivityEnabled)
+            Debug.Log("Connected");
+        else if (Beam.InteractivityState == BeamInteractivityState.InteractivityDisabled)
+            Debug.Log("Lost Connection");
+    }
+
 }

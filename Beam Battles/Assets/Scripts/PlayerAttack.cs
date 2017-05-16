@@ -1,16 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/*
+ * PlayerAttack.cs
+ * Peter Laliberte - BurgZerg Arcade
+ */
 using UnityEngine;
+
 
 [DisallowMultipleComponent]
 public class PlayerAttack : MonoBehaviour {
     [SerializeField] float baseDistance;
     [SerializeField] float curDistance;
     [SerializeField] float shotDur = 1f;
-
     [SerializeField] LineRenderer[] laser;
 
-    public static float maxDistance = (Board.playerMovementStep ) * 10 + Board.playerOffset;
+    public static float maxDistance = (Board.playerMovementStep) * 10 + Board.playerOffset;
 
 
     private void Start()
@@ -19,6 +21,9 @@ public class PlayerAttack : MonoBehaviour {
     }
 
 
+    /// <summary>
+    /// Fire the players lasers in all 4 directions.
+    /// </summary>
     public void Fire()
     {
         for (int cnt = 0; cnt < laser.Length; cnt++)
@@ -27,20 +32,19 @@ public class PlayerAttack : MonoBehaviour {
             laser[cnt].enabled = true;
         }
 
-        Vector3 up = new Vector3(0, 0, curDistance);
-        Vector3 right = new Vector3(curDistance, 0, 0);
-        Vector3 down = new Vector3(0, 0,-curDistance);
-        Vector3 left = new Vector3(-curDistance, 0, 0);
+        laser[0].SetPosition(1, new Vector3(0, 0, curDistance));        //up laser
+        laser[1].SetPosition(1, new Vector3(curDistance, 0, 0));        //right laser
+        laser[2].SetPosition(1, new Vector3(0, 0, -curDistance));       //down laser
+        laser[3].SetPosition(1, new Vector3(-curDistance, 0, 0));       //left laser
 
-        laser[0].SetPosition(1, up);
-        laser[1].SetPosition(1, right);
-        laser[2].SetPosition(1, down);
-        laser[3].SetPosition(1, left);
-
-        Invoke("TurnOffLasers", shotDur);
+        Invoke("TurnOffLasers", shotDur);   //turn the laser off after a set amount of time
     }
 
 
+    /// <summary>
+    /// Turn the lasers off after a set amount of time.
+    /// This is called frome and Invoke statment.
+    /// </summary>
     void TurnOffLasers()
     {
         for (int cnt = 0; cnt < laser.Length; cnt++)

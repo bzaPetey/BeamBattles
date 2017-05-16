@@ -9,18 +9,11 @@ namespace BeamExamples
     {
 
         // Use this for initialization
-        void OnEnable()
+        void Start()
         {
             // Register for OnInteractivityStateChanged to get notified when the BeamManager's
             // InteractivityState property changes.
             Beam.OnInteractivityStateChanged += OnInteractivityStateChanged;
-        }
-
-        void OnDisable()
-        {
-            // Register for OnInteractivityStateChanged to get notified when the BeamManager's
-            // InteractivityState property changes.
-            Beam.OnInteractivityStateChanged -= OnInteractivityStateChanged;
         }
 
         private void OnInteractivityStateChanged(object sender, BeamInteractivityStateChangedEventArgs e)

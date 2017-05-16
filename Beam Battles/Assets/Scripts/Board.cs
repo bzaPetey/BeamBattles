@@ -14,16 +14,16 @@ public class Board : MonoBehaviour {
 
     public void Start()
     {
-        //size board
-        PrepareBoard();
-        //place the pilars
-        PlacePilars();
-        //place walls
-        PlaceOuterWalls();
-        PlaceInnerWalls();
+        PrepareBoard();         //set the size of the board
+        PlacePilars();          //place the pilars on the board
+        PlaceOuterWalls();      //place the outside walls and make sure the texture is tiled right
+        PlaceInnerWalls();      //place all of the inner walls
     }
 
 
+    /// <summary>
+    /// Place a set percentage of walls on the board.
+    /// </summary>
     void PlaceInnerWalls()
     {
         //inner walls in one direction is (mapRows * 2) - 1 in both directions
@@ -83,32 +83,41 @@ public class Board : MonoBehaviour {
     }
 
 
+    /// <summary>
+    /// Place the outside walls and tile the wall texture properly.
+    /// </summary>
     void PlaceOuterWalls()
     {
+        //create the 4 walls
         Transform northWall = Instantiate(wallPrefab);
         Transform eastWall = Instantiate(wallPrefab);
         Transform southWall = Instantiate(wallPrefab);
         Transform westWall = Instantiate(wallPrefab);
 
         int offset = mapRows * 3;
+
+        //adjust the north wall
         northWall.localScale = new Vector3(offset, northWall.transform.localScale.y, northWall.transform.localScale.x);
         northWall.position = new Vector3(mapRows * 1.5f, eastWall.position.y, mapRows * 3);
         northWall.GetComponent<Renderer>().material.mainTextureScale = new Vector2(offset, 4);
         northWall.name = "North Wall";
         northWall.parent = transform;
 
+        //adjust the east wall
         eastWall.localScale = new Vector3(eastWall.transform.localScale.x, eastWall.transform.localScale.y, offset);
         eastWall.position = new Vector3(mapRows * 3, eastWall.position.y, mapRows * 1.5f);
         eastWall.GetComponent<Renderer>().material.mainTextureScale = new Vector2(offset, 4);
         eastWall.name = "East Wall";
         eastWall.parent = transform;
 
+        //adjust the south wall
         southWall.localScale = new Vector3(offset, southWall.transform.localScale.y, southWall.transform.localScale.x);
         southWall.position = new Vector3(mapRows * 1.5f, southWall.position.y, 0);
         southWall.GetComponent<Renderer>().material.mainTextureScale = new Vector2(offset, 4);
         southWall.name = "South Wall";
         southWall.parent = transform;
 
+        //adjust the west wall
         westWall.localScale = new Vector3(westWall.transform.localScale.x, westWall.transform.localScale.y, offset);
         westWall.position = new Vector3( 0, westWall.position.y, mapRows * 1.5f);
         westWall.GetComponent<Renderer>().material.mainTextureScale = new Vector2(offset, 4);
@@ -117,6 +126,9 @@ public class Board : MonoBehaviour {
     }
 
 
+    /// <summary>
+    /// Position and scale the board in the scene
+    /// </summary>
     void PrepareBoard()
     {
         float scale = (spacing.x + 1) * mapRows;
@@ -127,17 +139,20 @@ public class Board : MonoBehaviour {
     }
 
 
+    /// <summary>
+    /// Place the pilars at a set interval
+    /// </summary>
     void PlacePilars()
     {
         float posY = pilarPrefab.transform.localScale.y;
-        for(int y = 0; y < mapRows + 1; y++)
+
+        for (int y = 0; y < mapRows + 1; y++)
         {
             for (int x = 0; x < mapRows + 1; x++)
             {
                 Transform temp = Instantiate(pilarPrefab, new Vector3(x + x * spacing.x, posY, y + y * spacing.y), Quaternion.identity);
                 temp.parent = transform;
             }
-
         }
     }
 }

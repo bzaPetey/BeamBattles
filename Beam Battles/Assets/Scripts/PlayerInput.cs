@@ -1,5 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/*
+ * PlayerInput.cs
+ * Peter Laliberte - BurgZerg Arcade
+ */
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -13,7 +15,6 @@ public class PlayerInput : MonoBehaviour {
     [SerializeField] bool canMoveRight;
     [SerializeField] bool canMoveDown;
     [SerializeField] bool canMoveLeft;
-
 
 
     private void Awake()
@@ -48,6 +49,9 @@ public class PlayerInput : MonoBehaviour {
     }
 
 
+    /// <summary>
+    /// Find out what directions are available for the player to move in
+    /// </summary>
     public void GetAvailableDirections()
     {
         Ray ray;
@@ -76,6 +80,4 @@ public class PlayerInput : MonoBehaviour {
         if (Physics.Raycast(ray, out hit, distance))    canMoveRight = false;
         else canMoveRight = true;
     }
-
-
 }

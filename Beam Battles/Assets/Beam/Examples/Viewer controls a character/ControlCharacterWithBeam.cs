@@ -46,6 +46,11 @@ namespace BeamExamples
             {
                 transform.position += new Vector3(0, speed, 0);
             }
+
+            // Allow the audience to make the player spin.
+            if (BeamManager.SingletonInstance.GetButton("spin").GetButtonPressed(participantID)) {
+                transform.Rotate(0, 0, 10f);
+            }
         }
     }
 }

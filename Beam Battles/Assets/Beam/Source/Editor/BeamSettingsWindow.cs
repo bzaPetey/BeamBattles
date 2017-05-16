@@ -264,14 +264,9 @@ public class BeamSettingsWindow : EditorWindow
                         if (expandControlDetails[currentcontrolID])
                         {
                             EditorGUILayout.BeginHorizontal();
-                            if (GUILayout.Button("Press Down"))
+                            string buttonInputMessage = buttonMessageTemplate.Replace("{{controlID}}", currentcontrolID).Replace("{{event}}", "mouseup");
+                            if (GUILayout.Button("Click"))
                             {
-                                string buttonInputMessage = buttonMessageTemplate.Replace("{{controlID}}", currentcontrolID).Replace("{{event}}", "mousedown");
-                                BeamManager.SingletonInstance.SendMockWebSocketMessage(buttonInputMessage);
-                            }
-                            if (GUILayout.Button("Press Up"))
-                            {
-                                string buttonInputMessage = buttonMessageTemplate.Replace("{{controlID}}", currentcontrolID).Replace("{{event}}", "mouseup");
                                 BeamManager.SingletonInstance.SendMockWebSocketMessage(buttonInputMessage);
                             }
                             if (GUILayout.Button("Remove"))
@@ -458,8 +453,6 @@ public class BeamSettingsWindow : EditorWindow
                 }
                 EditorPrefs.SetString("Beam_LoggingLevel", newLoggingLevel);
             }
-
-            RenderApiExplorer();
         }
 
         EditorGUILayout.EndVertical();
@@ -568,51 +561,6 @@ public class BeamSettingsWindow : EditorWindow
         BeamManager.SingletonInstance.DoWork();
     }
 
-    // API Explorer
-    private Dictionary<string, bool> apiExpandGroupDetails;
-    private void RenderApiExplorer()
-    {
-        if (!Application.isPlaying)
-        {
-            return;
-        }
-
-        SectionSeperator();
-        showApiExplorer = EditorGUILayout.Foldout(showApiExplorer, "API Explorer", true, EditorStyles.foldout);
-        if (!showApiExplorer)
-        {
-            return;
-        }
-        else
-        {
-            // Groups
-            EditorGUILayout.LabelField("Beam.Groups", EditorStyles.boldLabel);
-            foreach (BeamGroup group in Beam.Groups)
-            {
-                bool expanded;
-                var currentGroupID = group.GroupID;
-                if (!apiExpandGroupDetails.TryGetValue(currentGroupID, out expanded))
-                {
-                    apiExpandGroupDetails.Add(currentGroupID, expanded);
-                }
-                apiExpandGroupDetails[currentGroupID] = EditorGUILayout.Foldout(apiExpandGroupDetails[currentGroupID], currentGroupID);
-                if (apiExpandGroupDetails[currentGroupID])
-                {
-                    EditorGUILayout.LabelField("GroupID: " + group.GroupID);
-                    EditorGUILayout.LabelField("SceneID: " + group.SceneID);
-                }
-            }
-
-            // Scenes
-
-            // Participants
-
-            // Buttons
-
-            // Joysticks
-        }
-    }
-
     // Helper classes
     const string readyMessage =
     "{" +
@@ -717,4 +665,43 @@ public class BeamSettingsWindow : EditorWindow
     "    }," +
     "  \"discard\": true" +
     "}";
+
+    // API Explorer
+    public static Dictionary<string, bool> apiExpandGroupDetails;
+    private static void RenderApiExplorer()
+    {
+        showApiExplorer = EditorGUILayout.Foldout(showApiExplorer, "API Explorer", true, EditorStyles.foldout);
+        if (!showApiExplorer)
+        {
+            return;
+        }
+        else
+        {
+            // Groups
+            EditorGUILayout.LabelField("Beam.Groups", EditorStyles.boldLabel);
+            foreach (BeamGroup group in Beam.Groups)
+            {
+                bool expanded;
+                var currentGroupID = group.GroupID;
+                if (!apiExpandGroupDetails.TryGetValue(currentGroupID, out expanded))
+                {
+                    apiExpandGroupDetails.Add(currentGroupID, expanded);
+                }
+                apiExpandGroupDetails[currentGroupID] = EditorGUILayout.Foldout(apiExpandGroupDetails[currentGroupID], currentGroupID);
+                if (apiExpandGroupDetails[currentGroupID])
+                {
+                    EditorGUILayout.LabelField("GroupID: " + group.GroupID);
+                    EditorGUILayout.LabelField("SceneID: " + group.SceneID);
+                }
+            }
+
+            // Scenes
+
+            // Participants
+
+            // Buttons
+
+            // Joysticks
+        }
+    }
 }
