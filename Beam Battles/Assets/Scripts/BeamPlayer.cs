@@ -55,6 +55,6 @@ public class BeamPlayer {
 
      public override string ToString()
     {
-        return string.Format("{0} is level {1}, and is {2}",beamName, beamLevel, isDead);
+        return string.Format("{0} is level {1}. Are they dead: {2}",beamName, beamLevel, isDead);
     }
 }

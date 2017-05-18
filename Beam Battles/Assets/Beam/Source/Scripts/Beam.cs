@@ -728,14 +728,11 @@ namespace Microsoft
                     }
                     outstandingCreateGroupsRequests.Add(groupID);
                 }
-            }
-            else
-            {
                 if (defaultSceneID != string.Empty)
                 {
                     beamManager.SetCurrentScene(defaultSceneID);
+                    outstandingSetDefaultSceneRequest = defaultSceneID;
                 }
-                outstandingSetDefaultSceneRequest = defaultSceneID;
             }
             processedSerializedProperties = true;
         }
