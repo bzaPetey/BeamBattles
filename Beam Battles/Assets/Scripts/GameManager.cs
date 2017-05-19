@@ -10,13 +10,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] Player player;
 
 
-    private void Start()
-    {
-        GameSetup();
-    }
-
-
-    void GameSetup()
+    public void GameSetup()
     {
         //create the board
         Instantiate(board);

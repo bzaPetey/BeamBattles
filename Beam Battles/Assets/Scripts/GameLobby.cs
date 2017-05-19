@@ -12,15 +12,16 @@ public class GameLobby : MonoBehaviour {
 
     [SerializeField] int numberOfTeams = 2;
     [SerializeField] int numberOfPlayerPerTeam = 1;
-    [SerializeField] GameManager gm;
     [SerializeField] List<Team> team;
     [SerializeField] List<BeamParticipant> beamPlayers;
+    [SerializeField] GameManager gm;
     [SerializeField] GameObject gameLobbyPannel;
     [SerializeField] BeamGroup crowdGroup;
     [SerializeField] BeamGroup playerGroup;
     [SerializeField] Text teamCountDisplay;
     [SerializeField] Text playerCountPerTeamDisplay;
-
+    [SerializeField] Text totalPlayersDisplay;
+    [SerializeField] Text boardSizeDisplay;
 
 
     private void Start()
@@ -30,6 +31,8 @@ public class GameLobby : MonoBehaviour {
 
         teamCountDisplay.text = numberOfTeams.ToString();
         playerCountPerTeamDisplay.text = numberOfPlayerPerTeam.ToString();
+
+        TotalPlayersDisplay();
     }
 
     private void OnEnable()
@@ -54,6 +57,7 @@ public class GameLobby : MonoBehaviour {
     {
         numberOfTeams = (int)num;
         teamCountDisplay.text = numberOfTeams.ToString();
+        TotalPlayersDisplay();
     }
 
 
@@ -61,22 +65,38 @@ public class GameLobby : MonoBehaviour {
     {
         numberOfPlayerPerTeam = (int)num;
         playerCountPerTeamDisplay.text = numberOfPlayerPerTeam.ToString();
+        TotalPlayersDisplay();
+    }
+
+
+    void TotalPlayersDisplay()
+    {
+        totalPlayersDisplay.text = "Total Players: " + (numberOfTeams * numberOfPlayerPerTeam);
+        BoardSizeDisplay();
+    }
+
+
+    void BoardSizeDisplay()
+    {
+        int size = numberOfTeams * numberOfPlayerPerTeam * 2;
+        boardSizeDisplay.text = "Board Size: " + size + "x" + size;
+        Board.mapRows = size;
     }
 
 
     public void StartGame()
     {
-        for (int cnt = 0; cnt < numberOfTeams; cnt++)
-            team.Add(new Team(numberOfPlayerPerTeam));
-
-        Beam.GoInteractive();
-
+        gm.GameSetup();
         gameLobbyPannel.SetActive(false);
+        Beam.GoInteractive();
     }
 
 
     public void AssignPlayerToRandomTeam()
     {
+        for (int cnt = 0; cnt < numberOfTeams; cnt++)
+            team.Add(new Team(numberOfPlayerPerTeam));
+
         if (team.Count < 1)
             return;
 

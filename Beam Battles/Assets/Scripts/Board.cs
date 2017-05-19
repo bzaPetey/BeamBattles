@@ -6,7 +6,7 @@ public class Board : MonoBehaviour {
     [SerializeField] Transform pilarPrefab;
     [SerializeField] Transform wallPrefab;
     [SerializeField] Vector2 spacing = new Vector2(2, 2);
-    [SerializeField] int mapRows = 10;
+    public static int mapRows = 10;
     [Range(0,1)] [SerializeField] float percentOfWallsToMake = .25f;
     public static float playerOffset = .5f;
     public static int cellSize = 3;
@@ -14,7 +14,7 @@ public class Board : MonoBehaviour {
 
     public void Start()
     {
-        PrepareBoard();         //set the size of the board
+        PlaceBoard();         //set the size of the board
         PlacePilars();          //place the pilars on the board
         PlaceOuterWalls();      //place the outside walls and make sure the texture is tiled right
         PlaceInnerWalls();      //place all of the inner walls
@@ -129,13 +129,16 @@ public class Board : MonoBehaviour {
     /// <summary>
     /// Position and scale the board in the scene
     /// </summary>
-    void PrepareBoard()
+    void PlaceBoard()
     {
         float scale = (spacing.x + 1) * mapRows;
         float position = scale * .5f;
 
         transform.localScale = new Vector3(scale, .1f, scale);
         transform.position = new Vector3(position, 0, position);
+
+        GetComponent<Renderer>().material.mainTextureScale = new Vector2(mapRows, mapRows);
+
     }
 
 
