@@ -43,7 +43,7 @@ MonoBehaviour:
     y: 0
     width: 1904
     height: 1021
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 521}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -107,8 +107,8 @@ MonoBehaviour:
     y: 30
     width: 1904
     height: 971
-  m_MinSize: {x: 811, y: 471}
-  m_MaxSize: {x: 22006, y: 14021}
+  m_MinSize: {x: 815, y: 471}
+  m_MaxSize: {x: 22010, y: 14021}
   vertical: 0
   controlID: 9
 --- !u!114 &6
@@ -131,8 +131,8 @@ MonoBehaviour:
     y: 0
     width: 1124
     height: 971
-  m_MinSize: {x: 302, y: 400}
-  m_MaxSize: {x: 8002, y: 8021}
+  m_MinSize: {x: 306, y: 442}
+  m_MaxSize: {x: 8006, y: 8042}
   vertical: 1
   controlID: 10
 --- !u!114 &7
@@ -181,8 +181,8 @@ MonoBehaviour:
     y: 557
     width: 1124
     height: 414
-  m_MinSize: {x: 302, y: 200}
-  m_MaxSize: {x: 8002, y: 4021}
+  m_MinSize: {x: 306, y: 221}
+  m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
   controlID: 83
 --- !u!114 &9
@@ -258,7 +258,7 @@ MonoBehaviour:
   m_MinSize: {x: 234, y: 471}
   m_MaxSize: {x: 10004, y: 14021}
   vertical: 1
-  controlID: 106
+  controlID: 131
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.7002836, y: -0.004065738, z: 0.003979301, w: 0.71384245}
     speed: 2
-    m_Value: {x: 0.7002834, y: -0.004065737, z: 0.0039793, w: 0.7138423}
+    m_Value: {x: -0.7002835, y: 0.004065738, z: -0.003979301, w: -0.71384245}
   m_Size:
     m_Target: 17.49442
     speed: 2
@@ -592,9 +592,9 @@ MonoBehaviour:
     height: 485
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 947be9ff
-    m_LastClickedID: -1475692
-    m_ExpandedIDs: d67ae9ff947be9ff6c99eeff6e99eeff5ad9eeff6cd9eeff9820efffaa20efff8a64efff9c64efffdc27f0ffee27f0ff86b2f2ff98b2f2ff965bf6ffa85bf6ffb45bf6ff8afbffffbefbffff00000000
+    m_SelectedIDs: de250000
+    m_LastClickedID: 0
+    m_ExpandedIDs: befbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -654,19 +654,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Prefabs
+    - Assets/StreamingAssets
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/StreamingAssets
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\git\BurgZerg Arcade\Unity\Beam Battles\Beam Battles
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 9c260000
-    m_LastClickedID: 9884
-    m_ExpandedIDs: 000000005825000092250000d8250000de260000282700003e2700005a2900005c2900005e29000060290000622900006429000000ca9a3bffffff7f
+    m_SelectedIDs: d2260000
+    m_LastClickedID: 9938
+    m_ExpandedIDs: 000000005825000092250000d8250000de260000282700003e2700005c2900005e2900006029000062290000642900006629000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -694,7 +694,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000005825000092250000d8250000de260000282700003e2700005a2900005c2900005e290000602900006229000064290000
+    m_ExpandedIDs: 000000005825000092250000d8250000de260000282700003e2700005c2900005e29000060290000622900006429000066290000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -725,18 +725,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: 002500003e24000000000000d6260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Tester
-      m_OriginalName: Tester
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 32692
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 13}
     m_CreateAssetUtility:
