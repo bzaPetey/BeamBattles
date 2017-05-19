@@ -7,17 +7,33 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 public class PlayerAttack : MonoBehaviour {
-    [SerializeField] float baseDistance;
-    [SerializeField] float curDistance;
-    [SerializeField] float shotDur = 1f;
+    public static uint MIN_DISTANCE = 1;    //why are the laser distances a float?
+    public static uint MAX_DISTANCE = 10;
+
+    [SerializeField] uint curDistance;
+    [SerializeField] float shotDur = .5f;
     [SerializeField] LineRenderer[] laser;
 
-    public static float maxDistance = (Board.playerMovementStep) * 10 + Board.playerOffset;
 
 
     private void Start()
     {
-        Invoke("TurnOffLasers",0);
+        TurnOffLasers();
+    }
+
+
+    public uint GetLaserDistance
+    {
+        get { return curDistance;  }
+        set
+        {
+            if (value < MIN_DISTANCE)
+                value = MIN_DISTANCE;
+            else if (value > MAX_DISTANCE)
+                value = MAX_DISTANCE;
+
+            curDistance = value;
+        }
     }
 
 
@@ -28,14 +44,14 @@ public class PlayerAttack : MonoBehaviour {
     {
         for (int cnt = 0; cnt < laser.Length; cnt++)
         {
-            laser[cnt].SetPosition(0, Vector3.zero);
+            laser[cnt].SetPosition(0,transform.position);
             laser[cnt].enabled = true;
         }
 
-        laser[0].SetPosition(1, new Vector3(0, 0, curDistance));        //up laser
-        laser[1].SetPosition(1, new Vector3(curDistance, 0, 0));        //right laser
-        laser[2].SetPosition(1, new Vector3(0, 0, -curDistance));       //down laser
-        laser[3].SetPosition(1, new Vector3(-curDistance, 0, 0));       //left laser
+        laser[0].SetPosition(1, ShotDistance(Direction.UP));        //up laser
+        laser[1].SetPosition(1, ShotDistance(Direction.RIGHT));     //right laser
+        laser[2].SetPosition(1, ShotDistance(Direction.DOWN));      //down laser
+        laser[3].SetPosition(1, ShotDistance(Direction.LEFT));      //left laser
 
         Invoke("TurnOffLasers", shotDur);   //turn the laser off after a set amount of time
     }
@@ -49,5 +65,41 @@ public class PlayerAttack : MonoBehaviour {
     {
         for (int cnt = 0; cnt < laser.Length; cnt++)
             laser[cnt].enabled = false;
+    }
+
+
+    Vector3 ShotDistance(Direction dir)
+    {   
+        float distance = (Board.cellSize * curDistance) + Board.playerOffset;
+
+        Vector3 pos = Vector3.zero;
+        Vector3 shotDir = Vector3.zero;
+        RaycastHit hit;
+
+        switch(dir)
+        {
+            case Direction.UP:
+                shotDir = Vector3.forward;
+                break;
+            case Direction.RIGHT:
+                shotDir = Vector3.right;
+                break;
+            case Direction.DOWN:
+                shotDir = Vector3.back;
+                break;
+            case Direction.LEFT:
+                shotDir = Vector3.left;
+                break;
+        }
+
+        if (Physics.Raycast(transform.position, shotDir, out hit, distance))
+        {
+            pos = hit.point;    //do not let the laser go past items
+            //we hit something so make it take dmg
+        }
+        else
+            pos = (transform.position + ( shotDir * distance)); //noting in the way, so fire the laser the max distance.
+
+        return pos;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft;
+using System;
 using UnityEngine;
 using Xbox.Services.Beam;
 using System.Collections.Generic;
@@ -9,10 +10,10 @@ public class GameLobby : MonoBehaviour {
     [SerializeField] int numberOfPlayerPerTeam = 1;
     [SerializeField] GameManager gm;
     [SerializeField] List<Team> team;
-    [SerializeField] List<BeamParticipant> beamParticipants = new List<BeamParticipant>();
+    [SerializeField] List<BeamParticipant> beamPlayers;
     [SerializeField] GameObject gameLobbyPannel;
-    [SerializeField] BeamGroup crowd;// = new BeamGroup("crowd", "crowd");
-    [SerializeField] BeamGroup players;// = new BeamGroup("players", "gameLobby");
+    [SerializeField] BeamGroup crowdGroup;// = new BeamGroup("crowd", "crowd");
+    [SerializeField] BeamGroup playerGroup;// = new BeamGroup("players", "gameLobby");
 
 
 
@@ -77,10 +78,12 @@ public class GameLobby : MonoBehaviour {
         if (team.Count < 1)
             return;
 
-        foreach(BeamParticipant p in beamParticipants)
+        Debug.Log("Asigning Teams");
+
+        foreach(BeamParticipant p in beamPlayers)
         {
-            int rndTeam = Random.Range(0, team.Count);
-            Debug.Log(rndTeam);
+            int rndTeam = UnityEngine.Random.Range(0, team.Count);
+//            Debug.Log(rndTeam);
 
             BeamPlayer bp = new BeamPlayer(p);
 
@@ -88,13 +91,13 @@ public class GameLobby : MonoBehaviour {
 
             if (team[rndTeam].IsFull)
             {
-                Debug.Log("Team Full");
+//                Debug.Log("Team Full");
 
                 gm.AddTeam(team[rndTeam]);
                 team.RemoveAt(rndTeam);
             }
 
-            Debug.Log(bp.ToString());
+//            Debug.Log(bp.ToString());
         }
     }
 
@@ -102,19 +105,15 @@ public class GameLobby : MonoBehaviour {
 
     void AddPlayer(BeamParticipant bp)
     {
-        //check to see if they are already in the list, and add them if not
-
-        //check to see if we have enough players to start the game, if so change (beam)scenes so people can not join the game
-        //        BeamPlayer bp = new BeamPlayer(bpart);
-
 //      Debug.Log("Contains " + bp.BeamUserName+ ": " +  beamParticipants.Contains(bp));
-        if (beamParticipants.Contains(bp))
+        if (beamPlayers.Contains(bp))
             return;
 
-        beamParticipants.Add(bp);
-//        Debug.Log("Added: " + bp.BeamUserName + ". Now we have a total of " + beamParticipants.Count);
+        beamPlayers.Add(bp);
 
-        if (beamParticipants.Count < numberOfPlayerPerTeam * numberOfTeams)
+      Debug.Log("Added: " + bp.BeamUserName + ". Now we have a total of " + beamPlayers.Count);
+
+        if (beamPlayers.Count < numberOfPlayerPerTeam * numberOfTeams)
             return;
 
         CreateTeams();
@@ -123,11 +122,30 @@ public class GameLobby : MonoBehaviour {
 
     void CreateTeams()
     {
-        foreach (BeamParticipant p in BeamManager.SingletonInstance.Participants)
-            p.Group = crowd;
+        Debug.Log("Creating Teams");
+        Debug.Log("Number of viewers: " + BeamManager.SingletonInstance.Participants.Count);
 
-        foreach (BeamParticipant p in beamParticipants)
-            p.Group = players;
+        for (int cnt = 0; cnt < BeamManager.SingletonInstance.Participants.Count; cnt++)
+        {
+            if (beamPlayers.Contains(Beam.Participants[cnt]))
+            {
+                Debug.Log("Assigning: " + Beam.Participants[cnt].BeamUserName + " to group: Player Group");
+                Beam.Participants[cnt].Group = playerGroup;
+            }
+            else
+            {
+                Debug.Log("Assigning: " + Beam.Participants[cnt].BeamUserName + " to group: Crowd Group");
+                Beam.Participants[cnt].Group = crowdGroup;
+            }
+        }
+
+        //foreach (BeamParticipant p in BeamManager.SingletonInstance.Participants)
+        //{
+        //    if (beamPlayers.Contains(p))
+        //        p.Group = playerGroup;
+        //    else
+        //        p.Group = crowdGroup;
+        //}
 
         AssignPlayerToRandomTeam();
     }
@@ -150,7 +168,8 @@ public class GameLobby : MonoBehaviour {
 
         if (Beam.GetButtonUp("joinGame"))
         {
-            //            BeamManager.SingletonInstance.TriggerCooldown("joinGame", 3000);
+//            e.Participant.Buttons[0].TriggerCooldown(3000);
+//          BeamManager.SingletonInstance.TriggerCooldown("joinGame", 3000);
 
             AddPlayer(e.Participant);
 
@@ -176,23 +195,15 @@ public class GameLobby : MonoBehaviour {
 
     void OnParticipantStateChanged(object sender, BeamParticipantStateChangedEventArgs e)
     {
-//        Debug.Log(e.Participant.BeamUserName + ": " + e.Participant.State);
-        //when people leave the channel, they are not removed from the participants list
-        //so we are going to do it manually.
-        if(e.Participant.State == BeamParticipantState.Left)
-            BeamManager.SingletonInstance.Participants.Remove(e.Participant);
-
-        //Debug.Log("Viewers: " + BeamManager.SingletonInstance.Participants.Count);
-
-        //foreach (BeamParticipant p in Beam.Participants)
-        //    Debug.Log(p.BeamUserName);
-//        Viewers();
+        //Debug.Log(e.Participant.BeamUserName + ": " + e.Participant.State);
+ //       Viewers();
     }
+
 
     void OnGoInteractive(object sender, BeamEventArgs e)
     {
-        crowd = new BeamGroup("crowd", "crowd");
-        players = new BeamGroup("players", "gameLobby");
+        crowdGroup = new BeamGroup("crowd", "crowd");
+        playerGroup = new BeamGroup("players", "gameLobby");
 
 //        Viewers();
     }

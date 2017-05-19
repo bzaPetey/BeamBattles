@@ -55,7 +55,7 @@ public class PlayerInput : MonoBehaviour {
     public void GetAvailableDirections()
     {
         Ray ray;
-        float distance = Board.playerMovementStep + Board.playerOffset + .5f;
+        float distance = Board.cellSize + Board.playerOffset + .5f;
 
         Debug.DrawRay(transform.position, Vector3.left, Color.yellow);
         Debug.DrawRay(transform.position, Vector3.back, Color.yellow);

@@ -11,16 +11,16 @@ public class PlayerMovement : MonoBehaviour {
         switch(dir)
         {
             case Direction.UP:
-                pos += Vector3.forward * Board.playerMovementStep;
+                pos += Vector3.forward * Board.cellSize;
                 break;
             case Direction.RIGHT:
-                pos += Vector3.right * Board.playerMovementStep;
+                pos += Vector3.right * Board.cellSize;
                 break;
             case Direction.DOWN:
-                pos += Vector3.back * Board.playerMovementStep;
+                pos += Vector3.back * Board.cellSize;
                 break;
             case Direction.LEFT:
-                pos += Vector3.left * Board.playerMovementStep;
+                pos += Vector3.left * Board.cellSize;
                 break;
         }
 

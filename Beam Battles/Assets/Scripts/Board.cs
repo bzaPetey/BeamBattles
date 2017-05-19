@@ -9,7 +9,7 @@ public class Board : MonoBehaviour {
     [SerializeField] int mapRows = 10;
     [Range(0,1)] [SerializeField] float percentOfWallsToMake = .25f;
     public static float playerOffset = .5f;
-    public static int playerMovementStep = 3;
+    public static int cellSize = 3;
 
 
     public void Start()
@@ -55,7 +55,7 @@ public class Board : MonoBehaviour {
                 int col = walls[index] % (mapRows - 1);
 
                 //place the wall running along the z
-                temp.position = new Vector3((col + 1) * playerMovementStep, temp.position.y, row * playerMovementStep + 1.5f);
+                temp.position = new Vector3((col + 1) * cellSize, temp.position.y, row * cellSize + 1.5f);
             }
             else
             {
@@ -74,7 +74,7 @@ public class Board : MonoBehaviour {
 
 //                Debug.Log((walls[index] - (midNumber + 1)) + "/" + mapRows + "[" + col + "," + row + "]");
                 //place the wall running along the x
-                temp.position = new Vector3((col * playerMovementStep ) + temp.localScale.z/2, temp.position.y, (row * playerMovementStep) + temp.localScale.z);
+                temp.position = new Vector3((col * cellSize ) + temp.localScale.z/2, temp.position.y, (row * cellSize) + temp.localScale.z);
                 temp.Rotate(Vector3.up, 90);
             }
             temp.parent = transform;
