@@ -1,21 +1,36 @@
 ﻿using Microsoft;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Xbox.Services.Beam;
 using System.Collections.Generic;
 
 [DisallowMultipleComponent]
 public class GameLobby : MonoBehaviour {
+    public static int minTeamCount = 2;
+    public static int minPlayersPerTeam = 1;
+
     [SerializeField] int numberOfTeams = 2;
     [SerializeField] int numberOfPlayerPerTeam = 1;
     [SerializeField] GameManager gm;
     [SerializeField] List<Team> team;
     [SerializeField] List<BeamParticipant> beamPlayers;
     [SerializeField] GameObject gameLobbyPannel;
-    [SerializeField] BeamGroup crowdGroup;// = new BeamGroup("crowd", "crowd");
-    [SerializeField] BeamGroup playerGroup;// = new BeamGroup("players", "gameLobby");
+    [SerializeField] BeamGroup crowdGroup;
+    [SerializeField] BeamGroup playerGroup;
+    [SerializeField] Text teamCountDisplay;
+    [SerializeField] Text playerCountPerTeamDisplay;
 
 
+
+    private void Start()
+    {
+        numberOfTeams = minTeamCount;
+        numberOfPlayerPerTeam = minPlayersPerTeam;
+
+        teamCountDisplay.text = numberOfTeams.ToString();
+        playerCountPerTeamDisplay.text = numberOfPlayerPerTeam.ToString();
+    }
 
     private void OnEnable()
     {
@@ -35,35 +50,23 @@ public class GameLobby : MonoBehaviour {
     }
 
 
-    public int NumberOfTeams
+    public void NumberOfTeams(float num)
     {
-        get { return numberOfTeams; }
-        set
-        {
-            if (value < 2)
-                value = 2;
-
-            numberOfTeams = value;
-        }
+        numberOfTeams = (int)num;
+        teamCountDisplay.text = numberOfTeams.ToString();
     }
 
 
-    public int NumberOfPlayersPerTeam
+    public void NumberOfPlayersPerTeam(float num)
     {
-        get { return numberOfPlayerPerTeam; }
-        set
-        {
-            if (value < 1)
-                value = 1;
-
-            numberOfPlayerPerTeam = value;
-        }
+        numberOfPlayerPerTeam = (int)num;
+        playerCountPerTeamDisplay.text = numberOfPlayerPerTeam.ToString();
     }
 
 
     public void StartGame()
     {
-        for (int cnt = 0; cnt < NumberOfTeams; cnt++)
+        for (int cnt = 0; cnt < numberOfTeams; cnt++)
             team.Add(new Team(numberOfPlayerPerTeam));
 
         Beam.GoInteractive();
@@ -72,7 +75,6 @@ public class GameLobby : MonoBehaviour {
     }
 
 
-    //return a bool if the player was added to the team properly
     public void AssignPlayerToRandomTeam()
     {
         if (team.Count < 1)
@@ -83,7 +85,6 @@ public class GameLobby : MonoBehaviour {
         foreach(BeamParticipant p in beamPlayers)
         {
             int rndTeam = UnityEngine.Random.Range(0, team.Count);
-//            Debug.Log(rndTeam);
 
             BeamPlayer bp = new BeamPlayer(p);
 
@@ -91,13 +92,9 @@ public class GameLobby : MonoBehaviour {
 
             if (team[rndTeam].IsFull)
             {
-//                Debug.Log("Team Full");
-
                 gm.AddTeam(team[rndTeam]);
                 team.RemoveAt(rndTeam);
             }
-
-//            Debug.Log(bp.ToString());
         }
     }
 
@@ -111,7 +108,7 @@ public class GameLobby : MonoBehaviour {
 
         beamPlayers.Add(bp);
 
-      Debug.Log("Added: " + bp.BeamUserName + ". Now we have a total of " + beamPlayers.Count);
+//      Debug.Log("Added: " + bp.BeamUserName + ". Now we have a total of " + beamPlayers.Count);
 
         if (beamPlayers.Count < numberOfPlayerPerTeam * numberOfTeams)
             return;
@@ -139,17 +136,8 @@ public class GameLobby : MonoBehaviour {
             }
         }
 
-        //foreach (BeamParticipant p in BeamManager.SingletonInstance.Participants)
-        //{
-        //    if (beamPlayers.Contains(p))
-        //        p.Group = playerGroup;
-        //    else
-        //        p.Group = crowdGroup;
-        //}
-
         AssignPlayerToRandomTeam();
     }
-
 
 
     void Viewers()
