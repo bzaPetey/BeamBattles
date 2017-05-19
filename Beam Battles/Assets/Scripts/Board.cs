@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [DisallowMultipleComponent]
 public class Board : MonoBehaviour {
@@ -14,10 +15,10 @@ public class Board : MonoBehaviour {
 
     public void Start()
     {
-        PlaceBoard();         //set the size of the board
-        PlacePilars();          //place the pilars on the board
-        PlaceOuterWalls();      //place the outside walls and make sure the texture is tiled right
-        PlaceInnerWalls();      //place all of the inner walls
+        PlaceBoard();                       //set the size of the board
+        PlaceOuterWalls();                  //place the outside walls and make sure the texture is tiled right
+        PlaceInnerWalls();
+        PlacePilars();
     }
 
 
@@ -26,13 +27,10 @@ public class Board : MonoBehaviour {
     /// </summary>
     void PlaceInnerWalls()
     {
-        //inner walls in one direction is (mapRows * 2) - 1 in both directions
         List<int> walls = new List<int>();
 
         int walllCount = (mapRows * mapRows) * 2 - mapRows * 2;
         int midNumber = ((walllCount) / 2 ) - 1;
-
-//        Debug.Log(mapRows + ": " + walllCount + "-" + midNumber);
 
         for (int cnt = 0; cnt < walllCount; cnt++)
             walls.Add(cnt);
@@ -46,40 +44,29 @@ public class Board : MonoBehaviour {
             int index = Random.Range(0, walls.Count);
 
             Transform temp = Instantiate(wallPrefab);
-            temp.name = "Wall: " + walls[index];
+            temp.name = string.Format("Wall: {0}", walls[index]);
 
             if (walls[index] <= midNumber)
             {
-                //wall number (0-78)/number of rows on the map - 1 (19) = col pos
                 int row = walls[index] / (mapRows - 1);
                 int col = walls[index] % (mapRows - 1);
 
-                //place the wall running along the z
                 temp.position = new Vector3((col + 1) * cellSize, temp.position.y, row * cellSize + 1.5f);
             }
             else
             {
-                //wall number (0-78)/number of rows on the map - 1 (19) = col pos
-                //                int row = walls[index] / midNumber;
-                //                int col = walls[index] % midNumber;
-
-                //20 = [0,0] [col,row]
-                //21 = [1,0]
-                //22 = [2,0]
-                //25 = [0,1]
-                //26 = [1,1]
-                    
-                int row = (walls[index] - (midNumber + 1)) / mapRows;   
+                int row = (walls[index] - (midNumber + 1)) / mapRows;
                 int col = (walls[index] - (midNumber + 1)) % mapRows;
 
-//                Debug.Log((walls[index] - (midNumber + 1)) + "/" + mapRows + "[" + col + "," + row + "]");
-                //place the wall running along the x
-                temp.position = new Vector3((col * cellSize ) + temp.localScale.z/2, temp.position.y, (row * cellSize) + temp.localScale.z);
+                temp.position = new Vector3((col * cellSize) + temp.localScale.z / 2, temp.position.y, (row * cellSize) + temp.localScale.z);
                 temp.Rotate(Vector3.up, 90);
             }
+
             temp.parent = transform;
             walls.RemoveAt(index);
         }
+
+        Debug.Log("Done placing walls");
     }
 
 
@@ -157,5 +144,6 @@ public class Board : MonoBehaviour {
                 temp.parent = transform;
             }
         }
+        Debug.Log("Done placing pillars");
     }
 }

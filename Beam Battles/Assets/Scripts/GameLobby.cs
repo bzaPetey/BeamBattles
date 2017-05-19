@@ -86,9 +86,9 @@ public class GameLobby : MonoBehaviour {
 
     public void StartGame()
     {
+        Beam.GoInteractive();
         gm.GameSetup();
         gameLobbyPannel.SetActive(false);
-        Beam.GoInteractive();
     }
 
 
@@ -210,6 +210,7 @@ public class GameLobby : MonoBehaviour {
 
     void OnGoInteractive(object sender, BeamEventArgs e)
     {
+        Debug.Log("Connected to Interactive");
         crowdGroup = new BeamGroup("crowd", "crowd");
         playerGroup = new BeamGroup("players", "gameLobby");
 
