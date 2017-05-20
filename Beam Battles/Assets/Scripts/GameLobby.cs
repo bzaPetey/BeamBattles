@@ -204,7 +204,7 @@ public class GameLobby : MonoBehaviour {
     void OnParticipantStateChanged(object sender, BeamParticipantStateChangedEventArgs e)
     {
         //Debug.Log(e.Participant.BeamUserName + ": " + e.Participant.State);
- //       Viewers();
+        Viewers();
     }
 
 
@@ -214,6 +214,6 @@ public class GameLobby : MonoBehaviour {
         crowdGroup = new BeamGroup("crowd", "crowd");
         playerGroup = new BeamGroup("players", "gameLobby");
 
-//        Viewers();
+ //       Viewers();
     }
 }
